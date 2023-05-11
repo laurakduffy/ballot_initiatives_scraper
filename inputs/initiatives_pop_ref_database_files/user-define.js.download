@@ -1,0 +1,108 @@
+//For Change Theme Color
+theme_color="";
+//For set boxed layout
+boxed_layout=false;
+boxed_layout_width=1200;
+boxed_bg_color="";
+
+
+$(document).ready(function(){
+    //Mega Menu Control
+    var data=[
+        {"megaMenu":true, "menuItemNo":1, "megaMenuColumns":2, "fullWidth":false},
+        {"megaMenu":true, "menuItemNo":2, "megaMenuColumns":3, "fullWidth":false},
+        {"megaMenu":true, "menuItemNo":3, "megaMenuColumns":3, "fullWidth":false},
+        {"megaMenu":true, "menuItemNo":4, "megaMenuColumns":3, "fullWidth":false},
+        {"megaMenu":true, "menuItemNo":5, "megaMenuColumns":2, "fullWidth":false},
+        {"megaMenu":true, "menuItemNo":6, "megaMenuColumns":2, "fullWidth":false},        
+		{"megaMenu":false, "menuItemNo":7, "megaMenuColumns":3, "fullWidth":false},
+        {"megaMenu":false, "menuItemNo":8, "megaMenuColumns":4, "fullWidth":false}
+        //megaMenu= true or false; (If you want to set mega menu you haveto make it must "true" )
+        //menuItemNo= Which menu item you want to make mega menu. (Number changable)
+        //megaMenuColumns= How much column you want to see the mega menu. (Number changable {2 to 4})
+        //fullWidth= If you want to set megamenu full width. (change true or false)
+    ];
+	//For PDF Tracking NCSL
+$("a[href$=pdf]").click(function(){ ga('send','event','Downloads','PDF',$(this).attr("href")); });
+
+
+
+
+
+
+
+
+
+    
+
+
+    /**********************************/
+    /**********************************/
+    //Please do not change below code
+    //mega menu start
+    var innerWidth = window.innerWidth;
+    if(($(window).resize() && innerWidth>991)|| innerWidth>991){
+        $.each(data, function(i){
+            if(data[i].megaMenu==true){
+                $(".navbar-nav > li").each(function(index){
+                    var menuItem = index + 1;
+                    if(data[i].menuItemNo==(menuItem)){
+                        var megaMenuColumns = data[i].megaMenuColumns;
+                        $(this).addClass('megaMenu-active');
+                        if((data[i].fullWidth==true) || (megaMenuColumns > 3)){
+                            $(this).addClass("fullWidth");
+                        }
+                        if(megaMenuColumns > 4){
+                            megaMenuColumns = 4;
+                        }
+                        $(this).children("ul").addClass("megaMenu-ul megaMenu-col"+megaMenuColumns);
+                        //Mega menu edge 
+                        if($(this).children(".megaMenu-ul").offset()) {
+                            var mL = parseInt($(".navbar-nav > li").css("marginLeft"));
+                            $(this).children(".megaMenu-ul").css("display","block");
+                            var offsetLeft = $(this).children(".megaMenu-ul").offset().left - mL;
+                            var mMenuWidth = $(this).children(".megaMenu-ul").outerWidth();
+                            var containerWidth = $(".container").width();
+                            var extraWindowWidthLeft = ($(window).width() - containerWidth) / 2;
+                            var dueContainerWidthMmenuLeft = offsetLeft - extraWindowWidthLeft;
+                            var dueContainerWidthMmenuRight = containerWidth - dueContainerWidthMmenuLeft;
+                            if(mMenuWidth > dueContainerWidthMmenuRight){
+                                $(this).addClass('edge');
+                            }
+                            else{
+                                $(this).removeClass('edge');
+                            }
+                            $(this).children(".megaMenu-ul").css("display","none");
+                        }
+                    }
+                })
+            }
+        })
+        $(".megaMenu-ul").mouseleave(function(){
+            $(".megaMenu-ul").delay(400).queue(function(next) { 
+            $(this).css('display', 'none'); 
+            next();
+            });
+        })
+    }
+
+    //boxed-layout-code
+    if(boxed_layout==true){
+        $("#boxed-container").addClass("boxed");
+        if(boxed_layout_width != null){
+            $(".boxed").css("max-width", boxed_layout_width);
+        }
+        if(boxed_bg_color != null){
+            $("#siteWrapper").css("background-color", boxed_bg_color);
+        }
+    }
+    else{
+        $("#boxed-container").removeClass("boxed");
+    }
+});
+//theme_color change
+(function(){
+    if(theme_color != null){
+        $("body").addClass(theme_color);
+    }
+})();
